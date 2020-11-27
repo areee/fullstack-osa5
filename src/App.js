@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import CreateBlogForm from './components/CreateBlogForm'
 import Togglable from './components/Togglable'
@@ -6,6 +6,7 @@ import blogService from './services/blogs'
 import loginService from './services/login'
 
 const App = () => {
+  const blogFormRef = useRef()
   const [blogs, setBlogs] = useState([])
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
@@ -50,12 +51,13 @@ const App = () => {
   }
 
   const addBlog = async (blogObject) => {
+    blogFormRef.current.toggleVisibility()
     const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
   }
 
   const createBlogForm = () => (
-    <Togglable buttonLabel="new note">
+    <Togglable buttonLabel="new note" ref={blogFormRef}>
       <CreateBlogForm createBlog={addBlog} />
     </Togglable>
   )
