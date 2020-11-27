@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 
-const CreateBlogForm = ({ handleSubmit }) => {
+const CreateBlogForm = ({ createBlog }) => {
   const [title, setTitle] = useState('')
   const [author, setAuthor] = useState('')
   const [urlAddress, setUrlAddress] = useState('')
@@ -17,10 +17,24 @@ const CreateBlogForm = ({ handleSubmit }) => {
     setUrlAddress(event.target.value)
   }
 
+  const addBlog = async (event) => {
+    event.preventDefault()
+
+    createBlog({
+      title: title,
+      author: author,
+      url: urlAddress,
+    })
+
+    setTitle('')
+    setAuthor('')
+    setUrlAddress('')
+  }
+
   return (
     <div>
       <h2>create new</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={addBlog}>
         <div>
           title:
           <input value={title} onChange={handleTitleChange} />

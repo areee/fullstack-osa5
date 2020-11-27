@@ -10,9 +10,6 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [urlAddress, setUrlAddress] = useState('')
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -52,34 +49,14 @@ const App = () => {
     setUser(null)
   }
 
-  const addBlog = async (event) => {
-    event.preventDefault()
-
-    const blogObject = {
-      title: title,
-      author: author,
-      url: urlAddress,
-    }
-
+  const addBlog = async (blogObject) => {
     const returnedBlog = await blogService.create(blogObject)
-
     setBlogs(blogs.concat(returnedBlog))
-    setTitle('')
-    setAuthor('')
-    setUrlAddress('')
   }
 
   const createBlogForm = () => (
     <Togglable buttonLabel="new note">
-      <CreateBlogForm
-        title={title}
-        author={author}
-        urlAddress={urlAddress}
-        handleTitleChange={({ target }) => setTitle(target.value)}
-        handleAuthorChange={({ target }) => setAuthor(target.value)}
-        handleUrlAddressChange={({ target }) => setUrlAddress(target.value)}
-        handleSubmit={addBlog}
-      />
+      <CreateBlogForm createBlog={addBlog} />
     </Togglable>
   )
 
