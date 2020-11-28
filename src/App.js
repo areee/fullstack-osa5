@@ -58,10 +58,13 @@ const App = () => {
 
   const addLikes = async (id) => {
     const blog = blogs.find((n) => n.id === id)
-    const changedBlog = { ...blog, user: user.id, likes: blog.likes + 1 }
+    const changedBlog = { ...blog, user: blog.user.id, likes: blog.likes + 1 }
 
     try {
-      const returnedBlog = await blogService.update(id, changedBlog)
+      var returnedBlog = await blogService.update(id, changedBlog)
+
+      returnedBlog = { ...returnedBlog, user: blog.user }
+
       setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
     } catch (exception) {
       console.log(`An error occurred: ${exception}`)
