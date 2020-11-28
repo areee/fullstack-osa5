@@ -1,13 +1,19 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog }) => {
+const Blog = ({ blog, addLikes }) => {
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
 
   const toggleVisibility = () => {
     setVisible(!visible)
+  }
+
+  const addLike = async (event) => {
+    event.preventDefault()
+
+    addLikes(blog.id)
   }
 
   const buttonText = visible ? 'hide' : 'view'
@@ -28,7 +34,7 @@ const Blog = ({ blog }) => {
       </div>
       <div style={showWhenVisible}>
         {blog.url} <br />
-        likes {blog.likes} <button>like</button> <br />
+        likes {blog.likes} <button onClick={addLike}>like</button> <br />
         {blog.user.name}
       </div>
     </div>

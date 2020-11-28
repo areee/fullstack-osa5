@@ -56,6 +56,18 @@ const App = () => {
     setBlogs(blogs.concat(returnedBlog))
   }
 
+  const addLikes = async (id) => {
+    const blog = blogs.find((n) => n.id === id)
+    const changedBlog = { ...blog, user: user.id, likes: blog.likes + 1 }
+
+    try {
+      const returnedBlog = await blogService.update(id, changedBlog)
+      setBlogs(blogs.map((blog) => (blog.id !== id ? blog : returnedBlog)))
+    } catch (exception) {
+      console.log(`An error occurred: ${exception}`)
+    }
+  }
+
   const createBlogForm = () => (
     <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <CreateBlogForm createBlog={addBlog} />
@@ -101,7 +113,7 @@ const App = () => {
       {createBlogForm()}
 
       {blogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} />
+        <Blog key={blog.id} blog={blog} addLikes={addLikes} />
       ))}
     </div>
   )
