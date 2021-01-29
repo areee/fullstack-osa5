@@ -7,7 +7,7 @@ import Blog from './Blog'
 describe('<Blog />', () => {
   let component
 
-  beforeEach(() => {
+  test('renders title and author but not url and likes', () => {
     const blog = {
       title: 'Hienonhieno testiotsikko johonkin supermahtavaan blogiin',
       author: 'Testi T. Testaaja',
@@ -17,9 +17,7 @@ describe('<Blog />', () => {
     }
 
     component = render(<Blog blog={blog} />)
-  })
 
-  test('renders title and author but not url and likes', () => {
     const div = component.container.querySelector('.blog')
     expect(div).toHaveTextContent(
       'Hienonhieno testiotsikko johonkin supermahtavaan blogiin'
@@ -31,6 +29,16 @@ describe('<Blog />', () => {
   })
 
   test('url and likes are showed when view button is clicked', () => {
+    const blog = {
+      title: 'Hienonhieno testiotsikko johonkin supermahtavaan blogiin',
+      author: 'Testi T. Testaaja',
+      url: 'http://www.testiosoite.fi',
+      likes: 0,
+      user: { name: 'Arttu' },
+    }
+
+    component = render(<Blog blog={blog} />)
+
     // component.debug()
 
     // const debugDiv = component.container.querySelector('div')
@@ -55,5 +63,25 @@ describe('<Blog />', () => {
 
     expect(div).toHaveTextContent('http://www.testiosoite.fi')
     expect(div).toHaveTextContent('likes 0')
+  })
+
+  test('clicking the like button twice calls event handler twice', () => {
+    const blog = {
+      title: 'Hienonhieno testiotsikko johonkin supermahtavaan blogiin',
+      author: 'Testi T. Testaaja',
+      url: 'http://www.testiosoite.fi',
+      likes: 0,
+      user: { name: 'Arttu' },
+    }
+
+    const mockHandler = jest.fn()
+
+    component = render(<Blog blog={blog} addLikes={mockHandler} />)
+
+    const button = component.getByText('like')
+    fireEvent.click(button)
+    fireEvent.click(button)
+
+    expect(mockHandler.mock.calls).toHaveLength(2)
   })
 })
