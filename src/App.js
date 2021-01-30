@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import CreateBlogForm from './components/CreateBlogForm'
 import Togglable from './components/Togglable'
 import Notification from './components/Notification'
+import Error from './components/Error'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -13,6 +14,7 @@ const App = () => {
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [errorMessage, setErrorMessage] = useState(null)
+  const [infoMessage, setInfoMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -61,6 +63,13 @@ const App = () => {
     blogFormRef.current.toggleVisibility()
     const returnedBlog = await blogService.create(blogObject)
     setBlogs(blogs.concat(returnedBlog))
+
+    setInfoMessage(
+      `a new blog ${blogObject.title} by ${blogObject.author} added`
+    )
+    setTimeout(() => {
+      setInfoMessage(null)
+    }, 5000)
   }
 
   const addLikes = async (id) => {
@@ -88,7 +97,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
-        <Notification message={errorMessage} />
+        <Error message={errorMessage} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -121,6 +130,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={infoMessage} />
       <p>
         {user.name} logged in <button onClick={handleLogout}>logout</button>
       </p>
