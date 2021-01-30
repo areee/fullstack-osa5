@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import Blog from './components/Blog'
 import CreateBlogForm from './components/CreateBlogForm'
 import Togglable from './components/Togglable'
+import Notification from './components/Notification'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -11,6 +12,7 @@ const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
+  const [errorMessage, setErrorMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then((blogs) => setBlogs(blogs))
@@ -42,6 +44,11 @@ const App = () => {
       setPassword('')
     } catch (exception) {
       console.log('wrong credentials')
+
+      setErrorMessage('wrong username or password')
+      setTimeout(() => {
+        setErrorMessage(null)
+      }, 5000)
     }
   }
 
@@ -81,6 +88,7 @@ const App = () => {
     return (
       <div>
         <h2>log in to application</h2>
+        <Notification message={errorMessage} />
         <form onSubmit={handleLogin}>
           <div>
             username
