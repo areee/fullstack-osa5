@@ -34,6 +34,10 @@ describe('Blog app', function () {
       cy.get('#password').type('vaarin')
       cy.get('#login-button').click()
 
+      cy.get('.error')
+        .should('contain', 'wrong username or password')
+        .and('have.css', 'color', 'rgb(255, 0, 0)')
+        .and('have.css', 'border-style', 'solid')
       cy.get('html').should('not.contain', 'Arttu Ylhävuori logged in')
     })
   })
