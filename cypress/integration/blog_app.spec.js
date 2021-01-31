@@ -41,4 +41,22 @@ describe('Blog app', function () {
       cy.get('html').should('not.contain', 'Arttu Ylhävuori logged in')
     })
   })
+
+  describe.only('When logged in', function () {
+    beforeEach(function () {
+      cy.get('#username').type('areee')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+    })
+
+    it('A blog can be created', function () {
+      cy.contains('create new blog').click()
+      cy.contains('create new')
+      cy.get('#title').type('Cypressin blogin otsikko')
+      cy.get('#author').type('Blogin kirjoittaja')
+      cy.get('#url').type('https://www.esimerkki.fi')
+      cy.get('#create-button').click()
+      cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
+    })
+  })
 })
