@@ -77,5 +77,13 @@ describe('Blog app', function () {
       cy.get('#add-likes-button').click()
       cy.contains('likes 1')
     })
+
+    it('and it can be removed', function () {
+      cy.get('#show-button').click()
+      cy.get('#remove-button').click()
+      cy.contains(
+        'A blog Cypressin blogin otsikko by Blogin kirjoittaja removed'
+      )
+    })
   })
 })
