@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
-const Blog = ({ blog, addLikes }) => {
+const Blog = ({ blog, addLikes, user, removeBlog }) => {
   const [visible, setVisible] = useState(false)
 
   const showWhenVisible = { display: visible ? '' : 'none' }
@@ -14,6 +14,19 @@ const Blog = ({ blog, addLikes }) => {
     event.preventDefault()
 
     addLikes(blog.id)
+  }
+
+  const removeBlogButton = () => {
+    if (blog.user.username === user.username) {
+      return <button onClick={removeSelectedBlog}>remove</button>
+    }
+  }
+
+  const removeSelectedBlog = async (event) => {
+    event.preventDefault()
+    if (window.confirm(`Remove blog ${blog.title} by ${blog.author}`)) {
+      removeBlog(blog.id)
+    }
   }
 
   const buttonText = visible ? 'hide' : 'view'
@@ -36,12 +49,14 @@ const Blog = ({ blog, addLikes }) => {
       </div>
       <div style={showWhenVisible} className="togglableContent">
         {blog.url} <br />
-        likes {blog.likes}{' '}
+        likes {blog.likes}
         <button id="add-likes-button" onClick={addLike}>
           like
-        </button>{' '}
+        </button>
         <br />
         {blog.user.name}
+        <br />
+        {removeBlogButton()}
       </div>
     </div>
   )

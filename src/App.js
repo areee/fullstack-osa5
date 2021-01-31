@@ -87,6 +87,21 @@ const App = () => {
     }
   }
 
+  const removeBlog = async (id) => {
+    const blog = blogs.find((n) => n.id === id)
+    try {
+      await blogService.deleteBlog(id)
+      setBlogs(blogs.filter((n) => n.id !== id))
+
+      setInfoMessage(`A blog ${blog.title} by ${blog.author} removed`)
+      setTimeout(() => {
+        setInfoMessage(null)
+      }, 5000)
+    } catch (exception) {
+      console.log(`An error occurred: ${exception}`)
+    }
+  }
+
   const createBlogForm = () => (
     <Togglable buttonLabel="create new blog" ref={blogFormRef}>
       <CreateBlogForm createBlog={addBlog} />
@@ -142,7 +157,13 @@ const App = () => {
       {createBlogForm()}
 
       {sortedBlogs.map((blog) => (
-        <Blog key={blog.id} blog={blog} addLikes={addLikes} />
+        <Blog
+          key={blog.id}
+          blog={blog}
+          addLikes={addLikes}
+          user={user}
+          removeBlog={removeBlog}
+        />
       ))}
     </div>
   )
