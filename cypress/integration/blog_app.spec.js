@@ -59,7 +59,7 @@ describe('Blog app', function () {
       cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
     })
   })
-  describe.only('When logged in and added a blog', function () {
+  describe('When logged in and added a blog', function () {
     beforeEach(function () {
       cy.get('#username').type('areee')
       cy.get('#password').type('salainen')
@@ -84,6 +84,31 @@ describe('Blog app', function () {
       cy.contains(
         'A blog Cypressin blogin otsikko by Blogin kirjoittaja removed'
       )
+    })
+  })
+
+  describe.only('When logged in and added several blogs', function () {
+    beforeEach(function () {
+      cy.get('#username').type('areee')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Cypressin blogin otsikko')
+      cy.get('#author').type('Blogin kirjoittaja')
+      cy.get('#url').type('https://www.esimerkki.fi')
+      cy.get('#create-button').click()
+
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Cypressin blogin toinen otsikko')
+      cy.get('#author').type('Toinen blogin kirjoittaja')
+      cy.get('#url').type('https://www.tokaesimerkki.fi')
+      cy.get('#create-button').click()
+
+      cy.get('#show-button').click()
+      cy.get('#add-likes-button').click()
+
+      // TODO: hyödynnä tätä osiota (sisältö suoraan backiin): https://fullstackopen.com/osa5/end_to_end_testaus#operaatioiden-tekeminen-kayttoliittyman-ohi
     })
   })
 })
