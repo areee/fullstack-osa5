@@ -42,7 +42,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('When logged in', function () {
+  describe('When logged in', function () {
     beforeEach(function () {
       cy.get('#username').type('areee')
       cy.get('#password').type('salainen')
@@ -57,6 +57,25 @@ describe('Blog app', function () {
       cy.get('#url').type('https://www.esimerkki.fi')
       cy.get('#create-button').click()
       cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
+    })
+  })
+  describe.only('When logged in and added a blog', function () {
+    beforeEach(function () {
+      cy.get('#username').type('areee')
+      cy.get('#password').type('salainen')
+      cy.get('#login-button').click()
+
+      cy.contains('create new blog').click()
+      cy.get('#title').type('Cypressin blogin otsikko')
+      cy.get('#author').type('Blogin kirjoittaja')
+      cy.get('#url').type('https://www.esimerkki.fi')
+      cy.get('#create-button').click()
+    })
+
+    it('A blog can be liked', function () {
+      cy.get('#show-button').click()
+      cy.get('#add-likes-button').click()
+      cy.contains('likes 1')
     })
   })
 })
