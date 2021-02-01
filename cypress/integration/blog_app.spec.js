@@ -99,7 +99,11 @@ describe('Blog app', function () {
         })
 
         it('The most liked blog is the first', function () {
-          // TODO: "Eräs ratkaisutapa on etsiä kaikki blogit ja tarkastella tulosta then-komennon takaisinkutsufunktiossa."
+          cy.get('.togglableContent').then((a) => {
+            cy.wrap(a[0]).contains('likes 13')
+            cy.wrap(a[1]).contains('likes 11')
+            cy.wrap(a[2]).contains('likes 5')
+          })
         })
       })
     })
