@@ -44,9 +44,7 @@ describe('Blog app', function () {
 
   describe('When logged in', function () {
     beforeEach(function () {
-      cy.get('#username').type('areee')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'areee', password: 'salainen' })
     })
 
     it('A blog can be created', function () {
@@ -59,23 +57,23 @@ describe('Blog app', function () {
       cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
     })
   })
-  describe.only('When logged in and added a blog', function () {
-    beforeEach(function () {
-      cy.get('#username').type('areee')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
 
-      cy.contains('create new blog').click()
-      cy.get('#title').type('Cypressin blogin otsikko')
-      cy.get('#author').type('Blogin kirjoittaja')
-      cy.get('#url').type('https://www.esimerkki.fi')
-      cy.get('#create-button').click()
+  describe('When logged in and added a blog', function () {
+    beforeEach(function () {
+      cy.login({ username: 'areee', password: 'salainen' })
+
+      cy.createBlog({
+        title: 'Cypressin blogin otsikko',
+        author: 'Blogin kirjoittaja',
+        url: 'https://www.esimerkki.fi',
+        likes: 5,
+      })
     })
 
     it('A blog can be liked', function () {
       cy.get('#show-button').click()
       cy.get('#add-likes-button').click()
-      cy.get('.togglableContent').contains('likes 1')
+      cy.get('.togglableContent').contains('likes 6')
     })
 
     it('and it can be removed', function () {
@@ -87,28 +85,25 @@ describe('Blog app', function () {
     })
   })
 
-  describe('When logged in and added several blogs', function () {
+  describe.only('When logged in and added several blogs', function () {
     beforeEach(function () {
-      cy.get('#username').type('areee')
-      cy.get('#password').type('salainen')
-      cy.get('#login-button').click()
+      cy.login({ username: 'areee', password: 'salainen' })
 
-      cy.contains('create new blog').click()
-      cy.get('#title').type('Cypressin blogin otsikko')
-      cy.get('#author').type('Blogin kirjoittaja')
-      cy.get('#url').type('https://www.esimerkki.fi')
-      cy.get('#create-button').click()
+      cy.createBlog({
+        title: 'Cypressin blogin otsikko',
+        author: 'Blogin kirjoittaja',
+        url: 'https://www.esimerkki.fi',
+        likes: 5,
+      })
 
-      cy.contains('create new blog').click()
-      cy.get('#title').type('Cypressin blogin toinen otsikko')
-      cy.get('#author').type('Toinen blogin kirjoittaja')
-      cy.get('#url').type('https://www.tokaesimerkki.fi')
-      cy.get('#create-button').click()
+      cy.createBlog({
+        title: 'Cypressin blogin toinen otsikko',
+        author: 'Toinen blogin kirjoittaja',
+        url: 'https://www.tokaesimerkki.fi',
+        likes: 10,
+      })
 
-      cy.get('#show-button').click()
-      cy.get('#add-likes-button').click()
-
-      // TODO: hyödynnä tätä osiota (sisältö suoraan backiin): https://fullstackopen.com/osa5/end_to_end_testaus#operaatioiden-tekeminen-kayttoliittyman-ohi
+      // TODO: "Eräs ratkaisutapa on etsiä kaikki blogit ja tarkastella tulosta then-komennon takaisinkutsufunktiossa."
     })
   })
 })
