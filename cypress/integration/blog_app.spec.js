@@ -56,54 +56,52 @@ describe('Blog app', function () {
       cy.get('#create-button').click()
       cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
     })
-  })
 
-  describe('When logged in and added a blog', function () {
-    beforeEach(function () {
-      cy.login({ username: 'areee', password: 'salainen' })
-
-      cy.createBlog({
-        title: 'Cypressin blogin otsikko',
-        author: 'Blogin kirjoittaja',
-        url: 'https://www.esimerkki.fi',
-        likes: 5,
-      })
-    })
-
-    it('A blog can be liked', function () {
-      cy.get('#show-button').click()
-      cy.get('#add-likes-button').click()
-      cy.get('.togglableContent').contains('likes 6')
-    })
-
-    it('and it can be removed', function () {
-      cy.get('#show-button').click()
-      cy.get('#remove-button').click()
-      cy.contains(
-        'A blog Cypressin blogin otsikko by Blogin kirjoittaja removed'
-      )
-    })
-  })
-
-  describe.only('When logged in and added several blogs', function () {
-    beforeEach(function () {
-      cy.login({ username: 'areee', password: 'salainen' })
-
-      cy.createBlog({
-        title: 'Cypressin blogin otsikko',
-        author: 'Blogin kirjoittaja',
-        url: 'https://www.esimerkki.fi',
-        likes: 5,
+    describe('and a blog added', function () {
+      beforeEach(function () {
+        cy.createBlog({
+          title: 'Cypressin blogin otsikko',
+          author: 'Blogin kirjoittaja',
+          url: 'https://www.esimerkki.fi',
+          likes: 5,
+        })
       })
 
-      cy.createBlog({
-        title: 'Cypressin blogin toinen otsikko',
-        author: 'Toinen blogin kirjoittaja',
-        url: 'https://www.tokaesimerkki.fi',
-        likes: 10,
+      it('A blog can be liked', function () {
+        cy.get('#show-button').click()
+        cy.get('#add-likes-button').click()
+        cy.get('.togglableContent').contains('likes 6')
       })
 
-      // TODO: "Eräs ratkaisutapa on etsiä kaikki blogit ja tarkastella tulosta then-komennon takaisinkutsufunktiossa."
+      it('and it can be removed', function () {
+        cy.get('#show-button').click()
+        cy.get('#remove-button').click()
+        cy.contains(
+          'A blog Cypressin blogin otsikko by Blogin kirjoittaja removed'
+        )
+      })
+
+      describe.only('and several blogs added', function () {
+        beforeEach(function () {
+          cy.createBlog({
+            title: 'Cypressin blogin toinen otsikko',
+            author: 'Toinen blogin kirjoittaja',
+            url: 'https://www.tokaesimerkki.fi',
+            likes: 13,
+          })
+
+          cy.createBlog({
+            title: 'Cypressin blogin kolmas otsikko',
+            author: 'Kolmas blogin kirjoittaja',
+            url: 'https://www.kolmasesimerkki.fi',
+            likes: 11,
+          })
+        })
+
+        it('The most liked blog is the first', function () {
+          // TODO: "Eräs ratkaisutapa on etsiä kaikki blogit ja tarkastella tulosta then-komennon takaisinkutsufunktiossa."
+        })
+      })
     })
   })
 })
