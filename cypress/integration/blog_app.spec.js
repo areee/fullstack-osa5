@@ -59,7 +59,7 @@ describe('Blog app', function () {
       cy.contains('Cypressin blogin otsikko Blogin kirjoittaja')
     })
   })
-  describe('When logged in and added a blog', function () {
+  describe.only('When logged in and added a blog', function () {
     beforeEach(function () {
       cy.get('#username').type('areee')
       cy.get('#password').type('salainen')
@@ -75,7 +75,7 @@ describe('Blog app', function () {
     it('A blog can be liked', function () {
       cy.get('#show-button').click()
       cy.get('#add-likes-button').click()
-      cy.contains('likes 1')
+      cy.get('.togglableContent').contains('likes 1')
     })
 
     it('and it can be removed', function () {
@@ -87,7 +87,7 @@ describe('Blog app', function () {
     })
   })
 
-  describe.only('When logged in and added several blogs', function () {
+  describe('When logged in and added several blogs', function () {
     beforeEach(function () {
       cy.get('#username').type('areee')
       cy.get('#password').type('salainen')
